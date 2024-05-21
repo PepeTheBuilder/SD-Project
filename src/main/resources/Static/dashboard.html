@@ -18,7 +18,7 @@
               return response.json();
             })
             .then(user => {
-              if (!user || !user.id || !user.role) {
+              if (!user || !user.id ) {
                 throw new Error('Invalid user details received');
               }
 
@@ -48,7 +48,7 @@
 
 
   function getMatchesByRole() {
-    return fetch(`/api/users/byRole`)
+    return fetch(`/api/users/getMyTitles`)
             .then(response => response.json())
             .then(matches => {
               let content = '';

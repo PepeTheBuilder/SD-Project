@@ -43,10 +43,6 @@ public class UserController {
     private static User userLoggedIn;
     private static boolean userLoggedInFlag = false;
 
-    @Autowired
-    private UserRepository userRepository;
-
-
     public UserController() {
         encoder = Encoder.getInstance();
     }
@@ -65,9 +61,7 @@ public class UserController {
     }
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> loginUser(@RequestParam String username, @RequestParam String password) {
-        System.out.println("Username: " + username + " Password: " + encoder.encodingPassword(password));
         User user = userService.findByName(username);
-        System.out.println("User: " + user);
         if (user != null && user.getPassword().equals(Encoder.encodingPassword(password))) {
             userLoggedIn= user;
             userLoggedInFlag = true;
@@ -97,21 +91,15 @@ public class UserController {
     @PostMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody User updatedUser) {
         if (userLoggedInFlag) {
-            User userToUpdate = userService.findByUsername(userLoggedIn.getUsername());
-
-            if (userToUpdate != null) {
-                System.out.println("New user: " + updatedUser);
-                if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()) {
-                    userToUpdate.setEmail(updatedUser.getEmail());
-                }
-                if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-                    userToUpdate.setPassword(Encoder.encodingPassword(updatedUser.getPassword()));
-                }
-                userService.save(userToUpdate);
-                return ResponseEntity.ok(userToUpdate);
-            } else {
-                return ResponseEntity.notFound().build();
+            if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()) {
+                userLoggedIn.setEmail(updatedUser.getEmail());
             }
+            if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+                userLoggedIn.setPassword(Encoder.encodingPassword(updatedUser.getPassword()));
+            }
+            userService.save(userLoggedIn);
+            return ResponseEntity.ok(new User());
+
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

@@ -2,6 +2,7 @@ package org.example.proiectfinalsd.Cotroller;
 
 import org.example.proiectfinalsd.Encoder;
 import org.example.proiectfinalsd.Entity.Admin;
+import org.example.proiectfinalsd.Entity.Manga;
 import org.example.proiectfinalsd.Entity.User;
 import org.example.proiectfinalsd.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +47,7 @@ public class AdminController {
     private static Admin adminLoggedIn;
     private static boolean adminLoggedInFlag = false;
 
-
-
-    public AdminController() {
-        encoder = Encoder.getInstance();
-    }
-
+    public AdminController() {encoder = Encoder.getInstance();}
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> loginUser(@RequestParam String username, @RequestParam String password) {
@@ -72,6 +68,7 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
+
     @GetMapping("/current")
     public ResponseEntity<Admin> getCurrentUser() {
         if(adminLoggedInFlag){
@@ -82,6 +79,7 @@ public class AdminController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping("/all")
     public ResponseEntity<List<User>> getAllUsers() {
         if(adminLoggedInFlag){
@@ -91,28 +89,23 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
-    @PostMapping("/update")
-    public ResponseEntity<Admin> updateUser(@RequestBody User updatedUser) {
-        if (adminLoggedInFlag) {
-            Admin userToUpdate = adminService.findByUsername(adminLoggedIn.getUsername());
 
-            if (userToUpdate != null) {
-                System.out.println("New user: " + updatedUser);
-                if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()) {
-                    userToUpdate.setEmail(updatedUser.getEmail());
-                }
-                if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-                    userToUpdate.setPassword(Encoder.encodingPassword(updatedUser.getPassword()));
-                }
-                adminService.save(userToUpdate);
-                return ResponseEntity.ok(userToUpdate);
-            } else {
-                return ResponseEntity.notFound().build();
+    @PostMapping("/update")
+    public ResponseEntity<Admin> updateUser(@RequestBody Admin updatedUser) {
+        if (adminLoggedInFlag) {
+            if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()) {
+                adminLoggedIn.setEmail(updatedUser.getEmail());
             }
+            if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+                adminLoggedIn.setPassword(Encoder.encodingPassword(updatedUser.getPassword()));
+            }
+            adminService.save(adminLoggedIn);
+            return ResponseEntity.ok(new Admin());
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
     @PostMapping("/logout")
     public ResponseEntity<Map<String, Object>> logoutUser() {
         if (adminLoggedInFlag) {
@@ -129,6 +122,7 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
+
     @PutMapping("/update_user") // by admin
     public ResponseEntity<User> updateUserByAdmin(@RequestBody User updatedUser) {
         if(!adminLoggedInFlag || adminLoggedIn == null) {
@@ -152,5 +146,22 @@ public class AdminController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping("/newManga")
+    public ResponseEntity<Map<String, Object>> addManga(@RequestBody Manga manga, @RequestBody String Type) {
+        if(adminLoggedInFlag){
+            mangaService.save(manga);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Manga added successfully");
+            return ResponseEntity.ok(response);
+        } else {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "No admin logged in");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+    }
+
 
 }
