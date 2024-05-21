@@ -9,7 +9,7 @@
             const userId = document.getElementById("userId").value;
             const username = document.getElementById("username").value;
 
-            fetch('/api/users/update_user', {
+            fetch('/api/admin/update_user', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,23 +30,6 @@
                 });
         }
 
-        function handleDeleteUser(event) {
-            event.preventDefault();
-            const userId = document.getElementById("deleteUserId").value;
-
-            fetch(`/api/users/delete?userId=${userId}`, {
-                method: 'DELETE',
-            })
-                .then(response => response.text())
-                .then(data => {
-                    console.log('Success:', data);
-                    alert('User deleted successfully');
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    alert('Error deleting user');
-                });
-        }
 
 
     </script>
@@ -61,11 +44,6 @@
     <input type="submit" value="Update User">
 </form>
 
-<form id="deleteForm" onsubmit="handleDeleteUser(event)">
-    <label for="deleteUserId">User ID to delete:</label><br>
-    <input type="text" id="deleteUserId" name="userId" required><br>
-    <input type="submit" value="Delete User">
-</form>
 
 </body>
 </html>

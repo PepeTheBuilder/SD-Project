@@ -27,13 +27,13 @@
                 fetch('/api/admin/all')
                     .then(response => response.json())
                     .then(users => {
-                        content += '<table border="1"><tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th></tr>';
+                        content += '<table border="1"><tr><th>ID</th><th>Username</th><th>Email</th></tr>';
                         users.forEach(u => {
-                            content += `<tr><td>${u.id}</td><td>${u.username}</td><td>${u.email}</td><td>${u.role}</td></tr>`;
+                            content += `<tr><td>${u.id}</td><td>${u.username}</td><td>${u.email}</td></tr>`;
                         });
                         content += '</table>';
                         content += '<button onClick="redirectToUserManagement()">User Management</button>';
-                        content += '<button onClick="redirectToAddTitle()">Add new Title</button>';
+                        content += '<button onClick="redirectToAddTitle()">Add new title</button>';
                         document.getElementById('content').innerHTML = content;
                     })
                     .catch(error => {

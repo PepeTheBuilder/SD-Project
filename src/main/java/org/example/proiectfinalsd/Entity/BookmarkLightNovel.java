@@ -1,6 +1,6 @@
 package org.example.proiectfinalsd.Entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 
 @Entity
@@ -9,6 +9,7 @@ public class BookmarkLightNovel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne
@@ -19,8 +20,13 @@ public class BookmarkLightNovel {
     @JoinColumn(name = "id_light_novel", nullable = false)
     private LightNovel lightNovel;
 
+    @Column(name = "user_last_chapter")
     private Integer userLastChapter;
+
+    @Column(name = "user_reading_status")
     private String userReadingStatus;
+
+    @Column(name = "user_score")
     private Float userScore;
 
     // Getters and Setters

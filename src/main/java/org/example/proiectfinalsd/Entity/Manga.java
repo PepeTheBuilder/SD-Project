@@ -1,19 +1,25 @@
 package org.example.proiectfinalsd.Entity;
 
-import jakarta.persistence.*;
-
+import javax.persistence.*;
 @Entity
+@Table(name = "manga")
 public class Manga {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;
 
+    @Column(name = "genre")
     private String genre;
+
+    @Column(name = "chapters")
     private int chapters;
+
+    @Column(name = "name")
     private String name;
 
     public Long getId() {
@@ -52,7 +58,15 @@ public class Manga {
         return name;
     }
 
+    public String getTitle() {
+        return name;
+    }
+
     public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTitle(String name) {
         this.name = name;
     }
 }

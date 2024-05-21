@@ -34,6 +34,7 @@
     })
             .then(response => {
               if (!response.ok) {
+                console.error('Network response was not ok', response);
                 throw new Error('Network response was not ok');
               }
               return response.json();

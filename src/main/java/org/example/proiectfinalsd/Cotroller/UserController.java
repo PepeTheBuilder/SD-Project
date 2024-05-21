@@ -1,7 +1,9 @@
 package org.example.proiectfinalsd.Cotroller;
 
 import org.example.proiectfinalsd.Encoder;
+import org.example.proiectfinalsd.Entity.Admin;
 import org.example.proiectfinalsd.Entity.User;
+import org.example.proiectfinalsd.Repository.UserRepository;
 import org.example.proiectfinalsd.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +43,9 @@ public class UserController {
     private static User userLoggedIn;
     private static boolean userLoggedInFlag = false;
 
+    @Autowired
+    private UserRepository userRepository;
+
 
     public UserController() {
         encoder = Encoder.getInstance();
@@ -48,18 +53,21 @@ public class UserController {
 
     @PostMapping("/register")
     public User registerUser(@RequestBody User user) {
-        if (userService.findByUsername(user.getUsername()) != null ||
-                userService.findByEmail(user.getEmail()) != null) {
-            throw new RuntimeException("Username or email already exists");
+        System.out.println("New user: " + user.toString() );
+        if (userService.findByEmail(user.getEmail()) != null) {
+            throw new RuntimeException("This email already is used");
         }
 
         String passEncoded = Encoder.encodingPassword(user.getPassword());
+        System.out.println("Encoded password: " + passEncoded);
         user.setPassword(passEncoded);
         return userService.save(user);
     }
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> loginUser(@RequestParam String username, @RequestParam String password) {
-        User user = userService.findByUsername(username);
+        System.out.println("Username: " + username + " Password: " + encoder.encodingPassword(password));
+        User user = userService.findByName(username);
+        System.out.println("User: " + user);
         if (user != null && user.getPassword().equals(Encoder.encodingPassword(password))) {
             userLoggedIn= user;
             userLoggedInFlag = true;
@@ -128,3 +136,5 @@ public class UserController {
 
 
 }
+
+

@@ -1,16 +1,24 @@
 package org.example.proiectfinalsd.Entity;
 
 // Admin.java
-import jakarta.persistence.*;
+
+import javax.persistence.*;
 
 @Entity
+@Table(name = "admin")
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "email", unique = true)
     private String email;
+
+    @Column(name = "hashed_password")
     private String hashed_password;
 
     public Long getId() {
@@ -25,7 +33,15 @@ public class Admin {
         return name;
     }
 
+    public String getUsername() {
+        return name;
+    }
+
     public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUsername(String name) {
         this.name = name;
     }
 
@@ -37,11 +53,11 @@ public class Admin {
         this.email = email;
     }
 
-    public String getHashed_password() {
+    public String getPassword() {
         return hashed_password;
     }
 
-    public void setHashed_password(String hashed_password) {
+    public void setPassword(String hashed_password) {
         this.hashed_password = hashed_password;
     }
 }

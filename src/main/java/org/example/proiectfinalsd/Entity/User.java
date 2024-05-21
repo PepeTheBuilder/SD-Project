@@ -1,15 +1,22 @@
 package org.example.proiectfinalsd.Entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "email", unique = true)
     private String email;
+
+    @Column(name = "hashed_password")
     private String hashed_password;
 
     public Long getId() {
@@ -28,6 +35,14 @@ public class User {
         this.name = name;
     }
 
+    public void setUsername(String name) {
+        this.name = name;
+    }
+
+    public String getUsername() {
+        return name;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -44,9 +59,14 @@ public class User {
         this.hashed_password = hashed_password;
     }
 
-    public String getUsername() {
-        return name;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", hashed_password='" + hashed_password + '\'' +
+                '}';
     }
 
-    // Getters and Setters
 }
