@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management</title>
+    <script>
+        function handleUpdateUser(event) {
+            event.preventDefault();
+            const userId = document.getElementById("userId").value;
+            const username = document.getElementById("username").value;
+
+            fetch('/api/users/update_user', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: userId,
+                    username: username,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    alert('User updated successfully');
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Error updating user');
+                });
+        }
+
+        function handleDeleteUser(event) {
+            event.preventDefault();
+            const userId = document.getElementById("deleteUserId").value;
+
+            fetch(`/api/users/delete?userId=${userId}`, {
+                method: 'DELETE',
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log('Success:', data);
+                    alert('User deleted successfully');
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Error deleting user');
+                });
+        }
+
+
+    </script>
+</head>
+<body>
+<h1>User Management</h1>
+<form id="updateForm" onsubmit="handleUpdateUser(event)">
+    <label for="userId">User ID:</label><br>
+    <input type="text" id="userId" name="userId" required><br>
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username" required><br>
+    <input type="submit" value="Update User">
+</form>
+
+<form id="deleteForm" onsubmit="handleDeleteUser(event)">
+    <label for="deleteUserId">User ID to delete:</label><br>
+    <input type="text" id="deleteUserId" name="userId" required><br>
+    <input type="submit" value="Delete User">
+</form>
+
+</body>
+</html>

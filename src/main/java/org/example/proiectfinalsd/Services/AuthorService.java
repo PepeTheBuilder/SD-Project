@@ -1,7 +1,5 @@
 package org.example.proiectfinalsd.Services;
 
-import Entity.*;
-import Repository.*;
 import org.example.proiectfinalsd.Entity.Author;
 import org.example.proiectfinalsd.Repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -36,12 +36,16 @@ public class User {
         this.email = email;
     }
 
-    public String getHashed_password() {
+    public String getPassword() {
         return hashed_password;
     }
 
-    public void setHashed_password(String hashed_password) {
+    public void setPassword(String hashed_password) {
         this.hashed_password = hashed_password;
+    }
+
+    public String getUsername() {
+        return name;
     }
 
     // Getters and Setters

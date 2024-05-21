@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="background-color: #606060;">
+<h1>Dashboard</h1>
+<div id="content"></div>
+<button onclick="redirectToUpdate()">Update Information</button>
+
+<script>
+    function loadContent() {
+        fetch('/api/admin/current')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch current user details');
+                }
+                return response.json();
+            })
+            .then(admin => {
+                if (!admin || admin.id<1) {
+                    throw new Error('Invalid admin details received');
+                }
+
+                let content = '';
+                content += '<h2>Admin Dashboard</h2>';
+                fetch('/api/admin/all')
+                    .then(response => response.json())
+                    .then(users => {
+                        content += '<table border="1"><tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th></tr>';
+                        users.forEach(u => {
+                            content += `<tr><td>${u.id}</td><td>${u.username}</td><td>${u.email}</td><td>${u.role}</td></tr>`;
+                        });
+                        content += '</table>';
+                        content += '<button onClick="redirectToUserManagement()">User Management</button>';
+                        content += '<button onClick="redirectToAddTitle()">Add new Title</button>';
+                        document.getElementById('content').innerHTML = content;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching users:', error);
+                    });
+
+            })
+            .catch(error => {
+                console.error('Error fetching current user details:', error);
+            });
+    }
+
+
+    function redirectToUpdate() {
+        window.location.href = '/update.html';
+    }
+
+    function redirectToUserManagement() {
+        window.location.href = '/user_management.html';
+    }
+
+    function redirectToAddTitle() {
+        window.location.href = '/newTitle.html';
+    }
+
+    window.onload = loadContent;
+</script>
+</body>
+</html>
