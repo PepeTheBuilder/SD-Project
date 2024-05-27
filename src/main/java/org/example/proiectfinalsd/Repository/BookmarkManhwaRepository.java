@@ -8,5 +8,4 @@ import java.util.List;
 public interface BookmarkManhwaRepository extends JpaRepository<BookmarkManhwa, Long> {
     List<BookmarkManhwa> findByUserId(Long userId);
 
-    List<BookmarkManhwa> findByName(String name);
 }

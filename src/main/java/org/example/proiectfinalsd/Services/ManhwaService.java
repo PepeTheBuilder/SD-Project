@@ -31,4 +31,7 @@ public class ManhwaService {
     }
 
 
+    public Manhwa findByName(String name) {
+        return manhwaRepository.findByName(name);
+    }
 }

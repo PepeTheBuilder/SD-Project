@@ -29,7 +29,4 @@ public class MangaService {
         mangaRepository.deleteById(id);
     }
 
-    public Manga findByManga(Manga manga) {
-        return mangaRepository.findByManga(manga);
-    }
 }

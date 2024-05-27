@@ -144,7 +144,7 @@ public class UserController {
     @PostMapping("/AddManhwaTOMyList")
     public ResponseEntity<Map<String, Object>> addManhwaToMyList(@RequestParam BookmarkToPrint bookmarkToPrint) {
         BookmarkManhwa bookmarkManhwa = new BookmarkManhwa(bookmarkToPrint, userLoggedIn);
-
+        bookmarkManhwa.setManhwa(manhwaService.findByName(bookmarkToPrint.name));
 
         if (addToMyList("Manhwa", bookmarkManhwa)) {
             Map<String, Object> response = new HashMap<>();
@@ -159,8 +159,15 @@ public class UserController {
         }
     }
     @PostMapping ("/AddMangaTOMyList")
-    public ResponseEntity<Map<String, Object>> addMangaToMyList(@RequestParam BookmarkToPrint bookmarkManga) {
-        if (addToMyList("Manga", bookmarkManga)) {
+    public ResponseEntity<Map<String, Object>> addMangaToMyList(@RequestParam BookmarkToPrint bookmarkToPrint) {
+        BookmarkManhwa bookmarkManhwa = new BookmarkManhwa(bookmarkToPrint, userLoggedIn);
+        bookmarkManhwa.setUser(userLoggedIn);
+        bookmarkManhwa.setUserScore(bookmarkToPrint.userScore);
+        bookmarkManhwa.setUserLastChapter(bookmarkToPrint.userLastChapter);
+        bookmarkManhwa.setUserReadingStatus(bookmarkToPrint.userReadingStatus);
+        bookmarkManhwa.setManhwa(manhwaService.findByName(bookmarkToPrint.name));
+
+        if (addToMyList("Manga", bookmarkManhwa)) {
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", "Manga added to your list");
@@ -173,7 +180,15 @@ public class UserController {
         }
     }
     @PostMapping("/AddLightNovelTOMyList")
-    public ResponseEntity<Map<String, Object>> addLightNovelToMyList(@RequestParam BookmarkToPrint bookmarkLightNovel) {
+    public ResponseEntity<Map<String, Object>> addLightNovelToMyList(@RequestParam BookmarkToPrint bookmarkToPrint) {
+
+    BookmarkLightNovel bookmarkLightNovel = new BookmarkLightNovel();
+    bookmarkLightNovel.setUser(userLoggedIn);
+    bookmarkLightNovel.setUserScore(bookmarkToPrint.userScore);
+    bookmarkLightNovel.setUserLastChapter(bookmarkToPrint.userLastChapter);
+    bookmarkLightNovel.setUserReadingStatus(bookmarkToPrint.userReadingStatus);
+    bookmarkLightNovel.setLightNovel(lightNovelService.findByName(bookmarkToPrint.name));
+
         if (addToMyList("LightNovel", bookmarkLightNovel)) {
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);

@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface LightNovelRepository extends JpaRepository<LightNovel, Long> {
 
+    LightNovel findByName(String name);
 }

@@ -33,7 +33,4 @@ public class BookmarkManhwaService {
         return repository.findByUserId(userId);
     }
 
-    public List<BookmarkManhwa> findByName(String name) {
-        return repository.findByName(name);
-    }
 }

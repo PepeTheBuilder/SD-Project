@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ManhwaRepository extends JpaRepository<Manhwa, Long> {
+    Manhwa findByName(String name);
 }

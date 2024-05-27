@@ -31,4 +31,7 @@ public class LightNovelService {
     }
 
 
+    public LightNovel findByName(String name) {
+        return lightNovelRepository.findByName(name);
+    }
 }
