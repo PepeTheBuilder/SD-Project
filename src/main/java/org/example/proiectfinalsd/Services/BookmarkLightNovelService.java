@@ -28,4 +28,8 @@ public class BookmarkLightNovelService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+    public List<BookmarkLightNovel> findByUserId(Long userId) {
+        return repository.findByUserId(userId);
+    }
 }

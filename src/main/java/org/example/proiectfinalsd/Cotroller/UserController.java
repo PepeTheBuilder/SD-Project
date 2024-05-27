@@ -1,8 +1,7 @@
 package org.example.proiectfinalsd.Cotroller;
 
 import org.example.proiectfinalsd.Encoder;
-import org.example.proiectfinalsd.Entity.Admin;
-import org.example.proiectfinalsd.Entity.User;
+import org.example.proiectfinalsd.Entity.*;
 import org.example.proiectfinalsd.Repository.UserRepository;
 import org.example.proiectfinalsd.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -120,9 +117,126 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
+    @GetMapping("/ShowManga")
+    public List<NovelToPrint> showManga() {
+        return getListNovelToPrint(mangaService.findAll());
+    }
+    @GetMapping("/ShowManhwa")
+    public List<NovelToPrint> showManhwa() {
+        return getListNovelToPrint(manhwaService.findAll());
+    }
+    @GetMapping("/ShowLightNovel")
+    public List<NovelToPrint>  showLightNovel() {
+        return getListNovelToPrint(lightNovelService.findAll());
+    }
+    @GetMapping("/ShowMyBookmarkManga")
+    public ResponseEntity<List<BookmarkToPrint>>  showMyBookmarkManga() {
+        return ResponseEntity.ok(getBookmarkToPrintList(bookmarkMangaService.findByUserId(userLoggedIn.getId())));
+    }
+    @GetMapping("/ShowMyBookmarkManhwa")
+    public ResponseEntity<List<BookmarkToPrint>>  showMyBookmarkManhwa() {
+        return ResponseEntity.ok(getBookmarkToPrintList(bookmarkManhwaService.findByUserId(userLoggedIn.getId())));
+    }
+    @GetMapping("/ShowMyBookmarkLightNovel")
+    public ResponseEntity<List<BookmarkToPrint>>  showMyBookmarkLightNovel() {
+        return ResponseEntity.ok(getBookmarkToPrintList(bookmarkLightNovelService.findByUserId(userLoggedIn.getId())));
+    }
+    @PostMapping("/AddManhwaTOMyList")
+    public ResponseEntity<Map<String, Object>> addManhwaToMyList(@RequestParam BookmarkToPrint bookmarkToPrint) {
+        BookmarkManhwa bookmarkManhwa = new BookmarkManhwa(bookmarkToPrint, userLoggedIn);
+
+
+        if (addToMyList("Manhwa", bookmarkManhwa)) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Manhwa added to your list");
+            return ResponseEntity.ok(response);
+        } else {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "No user logged in or other error");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+    }
+    @PostMapping ("/AddMangaTOMyList")
+    public ResponseEntity<Map<String, Object>> addMangaToMyList(@RequestParam BookmarkToPrint bookmarkManga) {
+        if (addToMyList("Manga", bookmarkManga)) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Manga added to your list");
+            return ResponseEntity.ok(response);
+        } else {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "No user logged in or other error");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+    }
+    @PostMapping("/AddLightNovelTOMyList")
+    public ResponseEntity<Map<String, Object>> addLightNovelToMyList(@RequestParam BookmarkToPrint bookmarkLightNovel) {
+        if (addToMyList("LightNovel", bookmarkLightNovel)) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Light Novel added to your list");
+            return ResponseEntity.ok(response);
+        } else {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "No user logged in or other error");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+    }
 
 
 
+
+
+    private <T> ArrayList<BookmarkToPrint> getBookmarkToPrintList(List<T> listOfObjects) {
+        ArrayList<BookmarkToPrint> listBookmarkToPrint = new ArrayList<>();
+        for (T object : listOfObjects) {
+            switch (object.getClass().getSimpleName()) {
+                case "BookmarkManhwa" -> listBookmarkToPrint.add(((BookmarkManhwa) object).getBookmarkToPrint());
+                case "BookmarkManga" -> listBookmarkToPrint.add(((BookmarkManga) object).getBookmarkToPrint()) ;
+                case "BookmarkLightNovel" -> listBookmarkToPrint.add(((BookmarkLightNovel) object).getBookmarkToPrint());
+                default -> throw new IllegalStateException("Unexpected value: " + object.getClass().getSimpleName());
+            }
+       }
+        return listBookmarkToPrint;
+    }
+    private <T> ArrayList<NovelToPrint> getListNovelToPrint(List<T> listOfObjects) {
+        ArrayList<NovelToPrint> listNovelToPrint = new ArrayList<>();
+        for (T object : listOfObjects) {
+            switch (object.getClass().getSimpleName()) {
+                case "Manhwa" -> listNovelToPrint.add(((Manhwa) object).getNovelToPrint());
+                case "Manga" -> listNovelToPrint.add(((Manga) object).getNovelToPrint()) ;
+                case "LightNovel" -> listNovelToPrint.add(((LightNovel) object).getNovelToPrint());
+                default -> throw new IllegalStateException("Unexpected value: " + object.getClass().getSimpleName());
+            }
+        }
+        return listNovelToPrint;
+    }
+
+    private boolean addToMyList (String category, Object object) {
+        if (userLoggedInFlag) {
+            return switch (category) {
+                case "Manga" -> {
+                    bookmarkMangaService.save((BookmarkManga) object);
+                    yield true;
+                }
+                case "Manhwa" -> {
+                    bookmarkManhwaService.save((BookmarkManhwa) object);
+                    yield true;
+                }
+                case "LightNovel" -> {
+                    bookmarkLightNovelService.save((BookmarkLightNovel) object);
+                    yield true;
+                }
+                default -> false;
+            };
+        } else {
+            return false;
+        }
+    }
 }
 
 

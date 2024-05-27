@@ -28,4 +28,9 @@ public class BookmarkMangaService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+    public List<BookmarkManga> findByUserId(Long userId) {
+        return repository.findByUserId(userId);
+    }
+
 }

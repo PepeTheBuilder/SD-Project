@@ -28,4 +28,12 @@ public class BookmarkManhwaService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+    public List<BookmarkManhwa> findByUserId(Long userId) {
+        return repository.findByUserId(userId);
+    }
+
+    public List<BookmarkManhwa> findByName(String name) {
+        return repository.findByName(name);
+    }
 }

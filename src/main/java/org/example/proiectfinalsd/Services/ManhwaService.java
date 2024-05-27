@@ -1,6 +1,8 @@
 package org.example.proiectfinalsd.Services;
 
+import org.example.proiectfinalsd.Entity.Manga;
 import org.example.proiectfinalsd.Entity.Manhwa;
+import org.example.proiectfinalsd.Entity.User;
 import org.example.proiectfinalsd.Repository.ManhwaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,4 +29,6 @@ public class ManhwaService {
     public void deleteById(Long id) {
         manhwaRepository.deleteById(id);
     }
+
+
 }

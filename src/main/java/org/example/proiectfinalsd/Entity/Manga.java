@@ -69,4 +69,8 @@ public class Manga {
     public void setTitle(String name) {
         this.name = name;
     }
+
+    public NovelToPrint getNovelToPrint() {
+        return new NovelToPrint(this);
+    }
 }

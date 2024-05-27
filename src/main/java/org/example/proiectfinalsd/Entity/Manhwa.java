@@ -70,4 +70,7 @@ public class Manhwa {
         this.name = name;
     }
 
+    public NovelToPrint getNovelToPrint() {
+        return new NovelToPrint(this);
+    }
 }

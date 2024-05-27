@@ -18,7 +18,7 @@ public class BookmarkLightNovel {
 
     @ManyToOne
     @JoinColumn(name = "id_light_novel", nullable = false)
-    private LightNovel lightNovel;
+    private LightNovel novel;
 
     @Column(name = "user_last_chapter")
     private Integer userLastChapter;
@@ -48,11 +48,11 @@ public class BookmarkLightNovel {
     }
 
     public LightNovel getLightNovel() {
-        return lightNovel;
+        return novel;
     }
 
     public void setLightNovel(LightNovel lightNovel) {
-        this.lightNovel = lightNovel;
+        this.novel = lightNovel;
     }
 
     public Integer getUserLastChapter() {
@@ -77,5 +77,9 @@ public class BookmarkLightNovel {
 
     public void setUserScore(Float userScore) {
         this.userScore = userScore;
+    }
+
+    public BookmarkToPrint getBookmarkToPrint() {
+        return new BookmarkToPrint(this);
     }
 }

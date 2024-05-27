@@ -1,86 +1,172 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <style>
+    body {
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      background-color: #4CAF50;
+      color: white;
+      padding: 20px;
+      margin: 0;
+      width: 100%;
+      text-align: center;
+    }
+    #contentPrincipal {
+      margin: 20px;
+    }
+    #content {
+      margin: 20px;
+      width: 80%;
+    }
+    button {
+      background-color: #046803;
+      color: white;
+      border: none;
+      padding: 15px 20px;
+      margin: 5px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #0a8e08;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+  </style>
 </head>
-<body style="background-color: #606060;">
+<body>
 <h1>Dashboard</h1>
+<div id="contentPrincipal"></div>
 <div id="content"></div>
-<button onclick="redirectToUpdate()">Update Information</button>
 
 <script>
   function loadContent() {
-    fetch('/api/users/current')
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('Failed to fetch current user details');
-              }
-              return response.json();
-            })
-            .then(user => {
-              if (!user || !user.id ) {
-                throw new Error('Invalid user details received');
-              }
+    let content = '';
+    content += '<button onClick="redirectToUpdateTitles()">Update Titles</button>';
+    content += '<button onClick="redirectToUpdate()">Update Account Information</button>';
+    content += '<button onClick="load(getManga())">Get My Manga</button>';
+    content += '<button onClick="load(getManhwa())">Get My Manhwa</button>';
+    content += '<button onClick="load(getLight())">Get My Light Novels</button>';
+    document.getElementById('contentPrincipal').innerHTML = content;
+  }
 
-              let content = '';
-                getMatchesByRole(user.role);
-                content += '<h2>User Dashboard</h2>';
-
-                getMatchesByRole()
-                        .then(matches => {
-                          content += matches;
-                          content += '<button onClick="redirectToUpdateTitles()">Update Titles</button>';
-
-                          document.getElementById('content').innerHTML = content;
-                        })
-                        .catch(error => {
-                          console.error('Error fetching matches:', error.message);
-                        });
-            })
-            .catch(error => {
-              console.error('Error fetching current user details:', error);
-            });
+  function load(content) {
+    content.then(data => {
+      document.getElementById('content').innerHTML = data;
+    });
   }
 
   function redirectToUpdateTitles() {
-    window.location.href = '/updateTitles.html';
+    window.location.href = '/updateTitle.html';
   }
 
-
-  function getMatchesByRole() {
-    return fetch(`/api/users/getMyTitles`)
+  function getManhwa() {
+    return fetch(`/api/users/ShowMyBookmarkManhwa`)
             .then(response => response.json())
-            .then(matches => {
+            .then(novels => {
               let content = '';
-              if (matches.length > 0) {
-                content += '<table border="1"><tr><th>ID</th><th>Tournament ID</th><th>Player 1 ID</th><th>Player 2 ID</th><th>Referee ID</th><th>Match Date</th><th>Score</th></tr>';
-                matches.forEach(match => {
+              if (novels.length > 0) {
+                content += '<table><tr><th>Novel</th><th>Last Chapter read</th><th>Reading Status</th><th>Score</th></tr>';
+                novels.forEach(novel => {
                   content += `<tr>
-                      <td>${match.id}</td>
-                      <td>${match.tournamentId}</td>
-                      <td>${match.player1Id}</td>
-                      <td>${match.player2Id}</td>
-                      <td>${match.refereeId}</td>
-                      <td>${match.matchDate}</td>
-                      <td>${match.score}</td>
-                    </tr>`;
+                  <td>${novel.name}</td>
+                  <td>${novel.userLastChapter}</td>
+                  <td>${novel.userReadingStatus}</td>
+                  <td>${novel.userScore}</td>
+                </tr>`;
                 });
                 content += '</table>';
               } else {
-                content += '<p>No matches found.</p>';
+                content += '<p>No novel found.</p>';
               }
               return content;
             })
             .catch(error => {
               console.error('Error fetching matches:', error.message);
-              return '<h2>Dashboard</h2><p>Error loading matches.</p>';
+              return '<p>Error loading novels.</p>';
+            });
+  }
+
+  function getManga() {
+    return fetch(`/api/users/ShowMyBookmarkManga`)
+            .then(response => response.json())
+            .then(novels => {
+              let content = '';
+              if (novels.length > 0) {
+                content += '<table><tr><th>Novel</th><th>Last Chapter read</th><th>Reading Status</th><th>Score</th></tr>';
+                novels.forEach(novel => {
+                  content += `<tr>
+                  <td>${novel.name}</td>
+                  <td>${novel.userLastChapter}</td>
+                  <td>${novel.userReadingStatus}</td>
+                  <td>${novel.userScore}</td>
+                </tr>`;
+                });
+                content += '</table>';
+              } else {
+                content += '<p>No novel found.</p>';
+              }
+              return content;
+            })
+            .catch(error => {
+              console.error('Error fetching matches:', error.message);
+              return '<p>Error loading novels.</p>';
+            });
+  }
+
+  function getLight() {
+    return fetch(`/api/users/ShowMyBookmarkLightNovel`)
+            .then(response => response.json())
+            .then(novels => {
+              let content = '';
+              if (novels.length > 0) {
+                content += '<table><tr><th>Novel</th><th>Last Chapter read</th><th>Reading Status</th><th>Score</th></tr>';
+                novels.forEach(novel => {
+                  content += `<tr>
+                  <td>${novel.name}</td>
+                  <td>${novel.userLastChapter}</td>
+                  <td>${novel.userReadingStatus}</td>
+                  <td>${novel.userScore}</td>
+                </tr>`;
+                });
+                content += '</table>';
+              } else {
+                content += '<p>No novel found.</p>';
+              }
+              return content;
+            })
+            .catch(error => {
+              console.error('Error fetching matches:', error.message);
+              return '<p>Error loading novels.</p>';
             });
   }
 
   function redirectToUpdate() {
     window.location.href = '/update.html';
   }
-
 
   window.onload = loadContent;
 </script>

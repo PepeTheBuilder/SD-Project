@@ -16,7 +16,7 @@ public class BookmarkManhwa {
 
     @ManyToOne
     @JoinColumn(name = "id_manhwa", nullable = false)
-    private Manhwa manhwa;
+    private Manhwa novel;
 
     @Column(name = "user_last_chapter")
     private Integer userLastChapter;
@@ -46,11 +46,11 @@ public class BookmarkManhwa {
     }
 
     public Manhwa getManhwa() {
-        return manhwa;
+        return novel;
     }
 
     public void setManhwa(Manhwa manhwa) {
-        this.manhwa = manhwa;
+        this.novel = manhwa;
     }
 
     public Integer getUserLastChapter() {
@@ -75,5 +75,19 @@ public class BookmarkManhwa {
 
     public void setUserScore(Float userScore) {
         this.userScore = userScore;
+    }
+
+    public BookmarkToPrint getBookmarkToPrint() {
+        return new BookmarkToPrint(this);
+    }
+
+    public BookmarkManhwa(BookmarkToPrint bookmarkToPrint, User user) {
+        this.user = user;
+        this.userLastChapter = bookmarkToPrint.userLastChapter;
+        this.userReadingStatus = bookmarkToPrint.userReadingStatus;
+        this.userScore = bookmarkToPrint.userScore;
+        ///TODO: set manhwa
+
+
     }
 }

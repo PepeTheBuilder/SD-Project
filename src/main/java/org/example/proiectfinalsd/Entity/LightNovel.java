@@ -71,4 +71,7 @@ public class LightNovel {
         this.name = name;
     }
 
+    public NovelToPrint getNovelToPrint() {
+        return new NovelToPrint(this);
+    }
 }

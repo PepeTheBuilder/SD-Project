@@ -1,6 +1,7 @@
 package org.example.proiectfinalsd.Services;
 
 import org.example.proiectfinalsd.Entity.Manga;
+import org.example.proiectfinalsd.Entity.User;
 import org.example.proiectfinalsd.Repository.MangaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,5 +27,9 @@ public class MangaService {
 
     public void deleteById(Long id) {
         mangaRepository.deleteById(id);
+    }
+
+    public Manga findByManga(Manga manga) {
+        return mangaRepository.findByManga(manga);
     }
 }
