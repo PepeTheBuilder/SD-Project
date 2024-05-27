@@ -67,9 +67,11 @@
     let content = '';
     content += '<button onClick="redirectToUpdateTitles()">Update Titles</button>';
     content += '<button onClick="redirectToUpdate()">Update Account Information</button>';
+    content += '<button onClick="redirectToSeeAll()">See all of our novels</button>';
     content += '<button onClick="load(getManga())">Get My Manga</button>';
     content += '<button onClick="load(getManhwa())">Get My Manhwa</button>';
     content += '<button onClick="load(getLight())">Get My Light Novels</button>';
+
     document.getElementById('contentPrincipal').innerHTML = content;
   }
 
@@ -78,6 +80,9 @@
       document.getElementById('content').innerHTML = data;
     });
   }
+    function redirectToSeeAll() {
+        window.location.href = '/seeAll.html';
+    }
 
   function redirectToUpdateTitles() {
     window.location.href = '/updateTitle.html';

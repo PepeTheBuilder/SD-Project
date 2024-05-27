@@ -27,6 +27,16 @@ public class BookmarkManhwa {
     @Column(name = "user_score")
     private Float userScore;
 
+    public BookmarkManhwa() {
+    }
+
+    public BookmarkManhwa(BookmarkToPrint bookmarkToPrint, User user) {
+        this.user = user;
+        this.userLastChapter = bookmarkToPrint.userLastChapter;
+        this.userReadingStatus = bookmarkToPrint.userReadingStatus;
+        this.userScore = bookmarkToPrint.userScore;
+
+    }
     // Getters and Setters
 
     public Long getId() {
@@ -81,13 +91,5 @@ public class BookmarkManhwa {
         return new BookmarkToPrint(this);
     }
 
-    public BookmarkManhwa(BookmarkToPrint bookmarkToPrint, User user) {
-        this.user = user;
-        this.userLastChapter = bookmarkToPrint.userLastChapter;
-        this.userReadingStatus = bookmarkToPrint.userReadingStatus;
-        this.userScore = bookmarkToPrint.userScore;
-        ///TODO: set manhwa
 
-
-    }
 }

@@ -1,0 +1,48 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    background-color: #f2f2f2; /* Light gray background color */
+}
+
+.content-principal {
+    margin-top: 20px;
+}
+
+.content {
+    margin-top: 20px;
+}
+
+button {
+    margin: 5px;
+    background-color: #4CAF50; /* Green button color */
+    color: white; /* White text color */
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green color on hover */
+}
+
+.logout-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #f44336; /* Red button color for logout */
+    color: white; /* White text color */
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.logout-btn:hover {
+    background-color: #d32f2f; /* Darker red color on hover */
+}

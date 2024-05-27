@@ -2,6 +2,7 @@ package org.example.proiectfinalsd.Entity;
 
 import javax.persistence.*;
 
+
 public class BookmarkToPrint {
 
     public String name;

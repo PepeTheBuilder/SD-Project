@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="styleSeeAll.css">
+    <style>
+        /* CSS for animated teddy bear */
+        .teddy-bear {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 100px;
+            animation: teddyWalk 2s infinite alternate;
+        }
+
+        @keyframes teddyWalk {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+<button onClick="logout()" class="logout-btn">Logout</button>
+<div id="contentPrincipal" class="content-principal"></div>
+<div id="content" class="content"></div>
+
+<!-- Animated teddy bear -->
+<img src="teddybear.png" class="teddy-bear" alt="Teddy Bear">
+
+<script>
+
+    function loadContent() {
+        let content = '';
+        content += '<button onClick="redirectToUpdateTitles()">Update Titles</button>';
+        content += '<button onClick="load(getManga())">Show Manga</button>';
+        content += '<button onClick="load(getManhwa())">Show Manhwa</button>';
+        content += '<button onClick="load(getLight())">Show Light Novels</button>';
+
+        document.getElementById('contentPrincipal').innerHTML = content;
+    }
+
+    function load(content) {
+        content.then(data => {
+            document.getElementById('content').innerHTML = data;
+        });
+    }
+
+    function redirectToUpdateTitles() {
+        window.location.href = '/updateTitle.html';
+    }
+
+    function logout() {
+        fetch('/api/users/logout', {method: 'POST'})
+            .then(() => {
+                window.location.href = '/login.html';
+            });
+    }
+
+    function getManga() {
+        return fetch(`/api/users/ShowManga`)
+            .then(response => response.json())
+            .then(novels => {
+                let content = '';
+                if (novels.length > 0) {
+                    content += '<table><tr><th>Title</th><th>Nr of Chapters</th><th>Genre</th><th>Author</th></tr>';
+                    novels.forEach(novel => {
+                        content += `<tr>
+                  <td>${novel.name}</td>
+                  <td>${novel.chapters}</td>
+                  <td>${novel.genre}</td>
+                  <td>${novel.author}</td>
+                </tr>`;
+                    });
+                    content += '</table>';
+                } else {
+                    content += '<p>No novel found.</p>';
+                }
+                return content;
+            })
+            .catch(error => {
+                console.error('Error fetching matches:', error.message);
+                return '<p>Error loading novels.</p>';
+            });
+    }
+
+    function getLight() {
+        return fetch(`/api/users/ShowLightNovel`)
+            .then(response => response.json())
+            .then(novels => {
+                let content = '';
+                if (novels.length > 0) {
+                    content += '<table><tr><th>Title</th><th>Nr of Chapters</th><th>Genre</th><th>Author</th></tr>';
+                    novels.forEach(novel => {
+                        content += `<tr>
+                  <td>${novel.name}</td>
+                  <td>${novel.chapters}</td>
+                  <td>${novel.genre}</td>
+                  <td>${novel.author}</td>
+                </tr>`;
+                    });
+                    content += '</table>';
+                } else {
+                    content += '<p>No novel found.</p>';
+                }
+                return content;
+            })
+            .catch(error => {
+                console.error('Error fetching matches:', error.message);
+                return '<p>Error loading novels.</p>';
+            });
+    }
+
+    function getManhwa() {
+        return fetch(`/api/users/ShowManhwa`)
+            .then(response => response.json())
+            .then(novels => {
+                let content = '';
+                if (novels.length > 0) {
+                    content += '<table><tr><th>Title</th><th>Nr of Chapters</th><th>Genre</th><th>Author</th></tr>';
+                    novels.forEach(novel => {
+                        content += `<tr>
+                  <td>${novel.name}</td>
+                  <td>${novel.chapters}</td>
+                  <td>${novel.genre}</td>
+                  <td>${novel.author}</td>
+                </tr>`;
+                    });
+                    content += '</table>';
+                } else {
+                    content += '<p>No novel found.</p>';
+                }
+                return content;
+            })
+            .catch(error => {
+                console.error('Error fetching matches:', error.message);
+                return '<p>Error loading novels.</p>';
+            });
+    }
+
+    window.onload = loadContent;
+</script>
+</body>
+</html>

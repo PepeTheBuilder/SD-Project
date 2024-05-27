@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 @RestController
@@ -142,7 +143,12 @@ public class UserController {
         return ResponseEntity.ok(getBookmarkToPrintList(bookmarkLightNovelService.findByUserId(userLoggedIn.getId())));
     }
     @PostMapping("/AddManhwaTOMyList")
-    public ResponseEntity<Map<String, Object>> addManhwaToMyList(@RequestParam BookmarkToPrint bookmarkToPrint) {
+    public ResponseEntity<Map<String, Object>> addManhwaToMyList(@RequestParam("title") String title,
+                                                                 @RequestParam("userLastChapter") Integer userLastChapter,
+                                                                 @RequestParam("userReadingStatus") String userReadingStatus,
+                                                                 @RequestParam("userScore") Float userScore) {
+        BookmarkToPrint bookmarkToPrint = new BookmarkToPrint(title, userLastChapter, userReadingStatus, userScore);
+        System.out.println("Bookmark to print: " + bookmarkToPrint);
         BookmarkManhwa bookmarkManhwa = new BookmarkManhwa(bookmarkToPrint, userLoggedIn);
         bookmarkManhwa.setManhwa(manhwaService.findByName(bookmarkToPrint.name));
 
@@ -159,7 +165,12 @@ public class UserController {
         }
     }
     @PostMapping ("/AddMangaTOMyList")
-    public ResponseEntity<Map<String, Object>> addMangaToMyList(@RequestParam BookmarkToPrint bookmarkToPrint) {
+    public ResponseEntity<Map<String, Object>> addMangaToMyList(@RequestParam("title") String title,
+                                                                @RequestParam("userLastChapter") Integer userLastChapter,
+                                                                @RequestParam("userReadingStatus") String userReadingStatus,
+                                                                @RequestParam("userScore") Float userScore) {
+        BookmarkToPrint bookmarkToPrint = new BookmarkToPrint(title, userLastChapter, userReadingStatus, userScore);
+
         BookmarkManhwa bookmarkManhwa = new BookmarkManhwa(bookmarkToPrint, userLoggedIn);
         bookmarkManhwa.setUser(userLoggedIn);
         bookmarkManhwa.setUserScore(bookmarkToPrint.userScore);
@@ -180,8 +191,11 @@ public class UserController {
         }
     }
     @PostMapping("/AddLightNovelTOMyList")
-    public ResponseEntity<Map<String, Object>> addLightNovelToMyList(@RequestParam BookmarkToPrint bookmarkToPrint) {
-
+    public ResponseEntity<Map<String, Object>> addLightNovelToMyList(@RequestParam("title") String title,
+                                                                     @RequestParam("userLastChapter") Integer userLastChapter,
+                                                                     @RequestParam("userReadingStatus") String userReadingStatus,
+                                                                     @RequestParam("userScore") Float userScore) {
+    BookmarkToPrint bookmarkToPrint = new BookmarkToPrint(title, userLastChapter, userReadingStatus, userScore);
     BookmarkLightNovel bookmarkLightNovel = new BookmarkLightNovel();
     bookmarkLightNovel.setUser(userLoggedIn);
     bookmarkLightNovel.setUserScore(bookmarkToPrint.userScore);
