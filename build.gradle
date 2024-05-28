@@ -22,7 +22,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'  // You can use a newer version if available
+    testImplementation 'org.mockito:mockito-core:4.8.0'  // You can use a newer version if available
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 

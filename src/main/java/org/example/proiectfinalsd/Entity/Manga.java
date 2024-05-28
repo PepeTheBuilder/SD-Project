@@ -73,4 +73,15 @@ public class Manga {
     public NovelToPrint getNovelToPrint() {
         return new NovelToPrint(this);
     }
+
+    @Override
+    public String toString() {
+        return "Manga{" +
+                "id=" + id +
+                ", author=" + author.getName() +
+                ", genre='" + genre + '\'' +
+                ", chapters=" + chapters +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

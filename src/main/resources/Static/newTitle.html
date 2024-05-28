@@ -2,9 +2,77 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Add New Title</title>
+    <link rel="stylesheet" href="styleNewTitle.css">
 </head>
 <body>
+<div class="container">
+    <h1>Add New Title</h1>
+    <form id="titleForm">
+        <label for="name">Title Name:</label>
+        <input type="text" id="name" name="name" required>
 
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required>
+
+        <label for="genre">Genre:</label>
+        <input type="text" id="genre" name="genre" required>
+
+        <label for="chapters">Number of Chapters:</label>
+        <input type="number" id="chapters" name="chapters" required>
+
+        <label>Type:</label>
+        <div class="radio-group">
+            <label><input type="radio" name="type" value="Manga" required checked> Manga</label>
+            <label><input type="radio" name="type" value="Manhwa"> Manhwa</label>
+            <label><input type="radio" name="type" value="Light Novel"> Light Novel</label>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+<script>
+    document.getElementById('titleForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+        const type = formData.get('type');
+        let apiUrl;
+
+        switch (type) {
+            case 'Manga':
+                apiUrl = '/api/admin/newManga';
+                break;
+            case 'Manhwa':
+                apiUrl = '/api/admin/newManhwa';
+                break;
+            case 'Light Novel':
+                apiUrl = '/api/admin/newLightNovel';
+                break;
+            default:
+                console.error('Invalid type selected');
+                return;
+        }
+
+        fetch(apiUrl, {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to add title');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Title added successfully');
+                console.log('Title added successfully:', data);
+            })
+            .catch(error => {
+                alert('Failed to add title');
+                console.error('Error:', error);
+            });
+    });
+</script>
 </body>
 </html>
